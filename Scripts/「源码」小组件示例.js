@@ -1,6 +1,6 @@
 // Variables used by Scriptable.
 // These must be at the very top of the file. Do not edit.
-// icon-color: orange; icon-glyph: comments;
+// icon-color: blue; icon-glyph: fire;
 //
 // iOS 桌面组件脚本 @「Scriptable」
 // 开发说明：请从 Widget 类开始编写，注释请勿修改
@@ -9,7 +9,7 @@
 
 // 添加require，是为了vscode中可以正确引入包，以获得自动补全等功能
 if (typeof require === 'undefined') require = importModule
-const { ScriptableWidget } = require('./env');
+const { ScriptableWidget } = require('./widget');
 
 // @组件代码开始
 class Widget extends ScriptableWidget {
@@ -19,8 +19,9 @@ class Widget extends ScriptableWidget {
 	 */
 	constructor(arg) {
 		super(arg);
-		this.name = '示例小组件';
-		this.desc = '「Scriptable」—— 原创精美实用小组件';
+		this.name = '百度热榜ss';
+		this.logo = 'https://www.baidu.com/cache/icon/favicon.ico';
+		this.desc = '百度搜索风云榜，实时更新网络热点';
 	}
 
 	/**
@@ -44,48 +45,88 @@ class Widget extends ScriptableWidget {
 	 */
 	async renderSmall(data) {
 		let w = new ListWidget();
-		await this.renderHeader(w, data['logo'], data['title']);
-		const t = w.addText(data['content']);
+		await this.renderHeader(w, this.logo, this.name);
+		const t = w.addText(data['hotsearch'][0]['pure_title']);
 		t.font = Font.lightSystemFont(16);
 		w.addSpacer();
-		w.url = this.actionUrl('open-url', data['url']);
+		w.url = this.actionUrl(
+			'open-url',
+			decodeURIComponent(data['hotsearch'][0]['linkurl']),
+		);
 		return w;
 	}
 	/**
 	 * 渲染中尺寸组件
 	 */
-	async renderMedium(data, num = 3) {
+	async renderMedium(data, num = 4) {
 		let w = new ListWidget();
-		await this.renderHeader(w, data['logo'], data['title']);
-		data['data'].slice(0, num).map((d) => {
+		await this.renderHeader(w, this.logo, this.name);
+		data['hotsearch'].slice(0, num).map((d, i) => {
 			const cell = w.addStack();
 			cell.centerAlignContent();
-			const cell_box = cell.addStack();
-			cell_box.size = new Size(3, 15);
-			cell_box.backgroundColor = new Color('#ff837a', 0.6);
+			const idx = cell.addText(String(i + 1));
+			idx.font = Font.boldSystemFont(14);
+			if (i === 0) {
+				idx.textColor = new Color('#fe2d46', 1);
+			} else if (i === 1) {
+				idx.textColor = new Color('#ff6600', 1);
+			} else if (i === 2) {
+				idx.textColor = new Color('#faa90e', 1);
+			} else {
+				idx.textColor = new Color('#9195a3', 1);
+			}
 			cell.addSpacer(10);
-			const cell_text = cell.addText(d['title']);
-			cell_text.font = Font.lightSystemFont(16);
-			cell.url = this.actionUrl('open-url', d['url']);
+			let _title = d['pure_title'];
+			_title = _title.replace(/&quot;/g, '"');
+			const cell_text = cell.addText(_title);
+			cell_text.font = Font.lightSystemFont(14);
+			cell_text.lineLimit = 1;
+			let _url = decodeURIComponent(d['linkurl']);
+			_url = _url.replace('://www.', '://m.');
+			cell.url = this.actionUrl('open-url', _url);
 			cell.addSpacer();
-			w.addSpacer(10);
+			w.addSpacer();
 		});
-		w.addSpacer();
+		// w.addSpacer()
+
+		// let lbg = new LinearGradient()
+		// lbg.locations = [0, 1]
+		// lbg.colors = [
+		//   Color.dynamic(new Color('#cfd9df', 1), new Color('#09203f', 1)),
+		//   Color.dynamic(new Color('#e2ebf0', 1), new Color('#537895', 1))
+		// ]
+		// w.backgroundGradient = lbg
 		return w;
 	}
 	/**
 	 * 渲染大尺寸组件
 	 */
 	async renderLarge(data) {
-		return await this.renderMedium(data, 10);
+		return await this.renderMedium(data, 11);
 	}
 
 	/**
 	 * 获取数据函数，函数名可不固定
 	 */
 	async getData() {
-		const api = 'https://x.im3x.cn/v1/test-api.json';
-		return await this.httpGet(api, true, false);
+		const req = new Request('https://www.baidu.com/');
+		req.method = 'GET';
+		req.headers = {
+			'User-Agent':
+				'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36 Edg/87.0.664.55',
+		};
+		const res = await req.loadString();
+		// console.log(res)
+		const tmp = res
+			.split(`<textarea id="hotsearch_data" style="display:none;">`)[1]
+			.split(`</textarea>`)[0];
+		console.log(tmp);
+		const data = eval(`(${tmp})`);
+		console.log(data);
+		// const data = JSON.parse(tmp)
+		// console.log(data['hotsearch'].length)
+
+		return data;
 	}
 
 	/**
