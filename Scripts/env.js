@@ -1042,7 +1042,7 @@ const Testing = async (Widget, default_args = '') => {
 							let NewWidget = null;
 							try {
 								const _func = new Function(
-									`const _Debugger = Base => {\n${_code}\nreturn Widget\n}\nreturn _Debugger`,
+									`const _Debugger = ScriptableWidget => {\n${_code}\nreturn Widget\n}\nreturn _Debugger`,
 								);
 								NewWidget = _func()(ScriptableWidget);
 							} catch (e) {
