@@ -2,14 +2,10 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: blue; icon-glyph: fire;
 //
-// iOS 桌面组件脚本 @「Scriptable」
-// 开发说明：请从 Widget 类开始编写，注释请勿修改
-// https://x.im3x.cn
-//
 
 // 添加require，是为了vscode中可以正确引入包，以获得自动补全等功能
-if (typeof require === 'undefined') require = importModule
-const { ScriptableWidget } = require('./env');
+if (typeof require === 'undefined') require = importModule;
+const { ScriptableWidget } = require('./widget');
 
 // @组件代码开始
 class Widget extends ScriptableWidget {
@@ -19,7 +15,7 @@ class Widget extends ScriptableWidget {
 	 */
 	constructor(arg) {
 		super(arg);
-		this.name = '百度热榜';
+		this.name = '百度热榜ss';
 		this.logo = 'https://www.baidu.com/cache/icon/favicon.ico';
 		this.desc = '百度搜索风云榜，实时更新网络热点';
 	}
@@ -140,4 +136,4 @@ class Widget extends ScriptableWidget {
 // @组件代码结束
 
 const { Testing } = require('./env');
-await Testing(Widget)
+await Testing(Widget);

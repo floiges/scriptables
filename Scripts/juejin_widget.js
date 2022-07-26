@@ -2,14 +2,11 @@
 // These must be at the very top of the file. Do not edit.
 // icon-color: blue; icon-glyph: fire;
 //
-// iOS 桌面组件脚本 @「Scriptable」
-// 开发说明：请从 Widget 类开始编写，注释请勿修改
-// https://x.im3x.cn
-//
 
 // 添加require，是为了vscode中可以正确引入包，以获得自动补全等功能
-if (typeof require === 'undefined') require = importModule
+if (typeof require === 'undefined') require = importModule;
 const { ScriptableWidget } = require('./widget');
+const { getCurrentPoints, getSignCounts } = require('./juejin');
 
 // @组件代码开始
 class Widget extends ScriptableWidget {
@@ -19,9 +16,10 @@ class Widget extends ScriptableWidget {
 	 */
 	constructor(arg) {
 		super(arg);
-		this.name = '百度热榜ss';
-		this.logo = 'https://www.baidu.com/cache/icon/favicon.ico';
-		this.desc = '百度搜索风云榜，实时更新网络热点';
+		this.name = '掘金统计';
+		this.logo =
+			' https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web//static/favicons/favicon-32x32.png';
+		this.desc = '签到、矿石';
 	}
 
 	/**
@@ -33,10 +31,8 @@ class Widget extends ScriptableWidget {
 		switch (this.widgetFamily) {
 			case 'large':
 				return await this.renderLarge(data);
-			case 'medium':
-				return await this.renderMedium(data);
 			default:
-				return await this.renderSmall(data);
+				return await this.renderMedium(data);
 		}
 	}
 
@@ -58,13 +54,13 @@ class Widget extends ScriptableWidget {
 	/**
 	 * 渲染中尺寸组件
 	 */
-	async renderMedium(data, num = 4) {
+	async renderMedium(data = [], num = 4) {
 		let w = new ListWidget();
 		await this.renderHeader(w, this.logo, this.name);
-		data['hotsearch'].slice(0, num).map((d, i) => {
+		data.map((d, i) => {
 			const cell = w.addStack();
 			cell.centerAlignContent();
-			const idx = cell.addText(String(i + 1));
+			const idx = cell.addText(d.title);
 			idx.font = Font.boldSystemFont(14);
 			if (i === 0) {
 				idx.textColor = new Color('#fe2d46', 1);
@@ -72,18 +68,11 @@ class Widget extends ScriptableWidget {
 				idx.textColor = new Color('#ff6600', 1);
 			} else if (i === 2) {
 				idx.textColor = new Color('#faa90e', 1);
-			} else {
-				idx.textColor = new Color('#9195a3', 1);
 			}
 			cell.addSpacer(10);
-			let _title = d['pure_title'];
-			_title = _title.replace(/&quot;/g, '"');
-			const cell_text = cell.addText(_title);
+			const cell_text = cell.addText(d.count);
 			cell_text.font = Font.lightSystemFont(14);
 			cell_text.lineLimit = 1;
-			let _url = decodeURIComponent(d['linkurl']);
-			_url = _url.replace('://www.', '://m.');
-			cell.url = this.actionUrl('open-url', _url);
 			cell.addSpacer();
 			w.addSpacer();
 		});
@@ -109,24 +98,22 @@ class Widget extends ScriptableWidget {
 	 * 获取数据函数，函数名可不固定
 	 */
 	async getData() {
-		const req = new Request('https://www.baidu.com/');
-		req.method = 'GET';
-		req.headers = {
-			'User-Agent':
-				'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.67 Safari/537.36 Edg/87.0.664.55',
-		};
-		const res = await req.loadString();
-		// console.log(res)
-		const tmp = res
-			.split(`<textarea id="hotsearch_data" style="display:none;">`)[1]
-			.split(`</textarea>`)[0];
-		console.log(tmp);
-		const data = eval(`(${tmp})`);
-		console.log(data);
-		// const data = JSON.parse(tmp)
-		// console.log(data['hotsearch'].length)
-
-		return data;
+		const countRes = await getSignCounts();
+		const pointRes = await getCurrentPoints();
+		return [
+			{
+				title: '连续签到',
+				count: countRes.cont_count || 0,
+			},
+			{
+				title: '累计签到',
+				count: countRes.sum_count || 0,
+			},
+			{
+				title: '累计矿石',
+				count: pointRes,
+			},
+		];
 	}
 
 	/**
@@ -140,4 +127,4 @@ class Widget extends ScriptableWidget {
 // @组件代码结束
 
 const { Testing } = require('./env');
-await Testing(Widget)
+await Testing(Widget);

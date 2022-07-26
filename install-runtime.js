@@ -1,6 +1,6 @@
 const FILE_MGR = FileManager[module.filename.includes('Documents/iCloud~') ? 'iCloud' : 'local']();
 await Promise.all(
-	['widget.js', 'env.js', '「源码」小组件示例.js'].map(async (js) => {
+	['widget.js', 'env.js', 'example.js'].map(async (js) => {
 		const REQ = new Request(
 			`https://raw.githubusercontent.com/floiges/scriptables/v2-dev/Scripts/${encodeURIComponent(
 				js,
@@ -11,8 +11,6 @@ await Promise.all(
 	}),
 );
 FILE_MGR.remove(module.filename);
-Safari.open(
-	'scriptable:///open?scriptName=' + encodeURIComponent('「源码」小组件示例'),
-);
+Safari.open('scriptable:///open?scriptName=' + encodeURIComponent('example'));
 
 module.exports = {};
