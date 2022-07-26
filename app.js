@@ -120,7 +120,7 @@ function getIPAdress() {
 const _ip = getIPAdress()
 const _host = `http://${_ip}:${HTTP_PORT}`
 
-console.log('[*] 「小件件」开发服务运行中')
+console.log('[*] 「Scriptable」开发服务运行中');
 console.log(`[-] 地址：${_host}`)
 console.log(`[-] 如果你的手机还没有配置开发环境，请手机 Safari 访问上述地址，查看引导`)
 console.log('[+] 如果你的手机已经安装好环境和小组件模板，请在 Scriptable 里点击小组件模板->远程开发，服务器地址输入：', _ip)

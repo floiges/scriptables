@@ -2,38 +2,36 @@
 // 方便隐藏敏感信息，减少组件体积和保护小组件不被随意修改
 
 // 用法：
-// node encode.js Dist/「小件件」你的小组件.js
+// node encode.js Dist/「Scriptable」你的小组件.js
 
 
-const process = require('process')
-const os = require('os')
-const fs = require('fs')
-const path = require('path')
+const process = require('process');
+const fs = require('fs');
+const path = require('path');
 
-var JB = require('javascript-obfuscator');
+const JB = require('javascript-obfuscator');
 
 if (process.argv.length !== 3) {
-  console.log('[!] 用法：node encode.js Dist/「小件件」xxx.js')
-  process.exit(0)
+	console.log('[!] 用法：node encode.js Dist/「Scriptable」xxx.js');
+	process.exit(0);
 }
 
-const file_name = process.argv[2]
-const out_name = file_name.replace(".js", ".enc.js")
+const file_name = process.argv[2];
+const out_name = file_name.replace('.js', '.enc.js');
 
 // 读取源文件
-const widget_file = fs.readFileSync(path.join(__dirname, file_name))
+const widget_file = fs.readFileSync(path.join(__dirname, file_name));
 
-let widget_code = widget_file.toString("utf-8")
-widget_code = widget_code.split("await Running(Widget)")[0];
+let widget_code = widget_file.toString('utf-8');
+widget_code = widget_code.split('await Running(Widget)')[0];
 
-
-var result = JB.obfuscate(widget_code.toString("utf-8"), {
-  "rotateStringArray": true,
-  "selfDefending": true,
-  "stringArray": true,
-  splitStringsChunkLength: 100,
-  "stringArrayEncoding": ["rc4", "base64"]
-}).getObfuscatedCode()
+const result = JB.obfuscate(widget_code.toString('utf-8'), {
+	rotateStringArray: true,
+	selfDefending: true,
+	stringArray: true,
+	splitStringsChunkLength: 100,
+	stringArrayEncoding: ['rc4', 'base64'],
+}).getObfuscatedCode();
 
 let result_header = widget_code.split("// icon-color:")[0]
 result_header += "// icon-color:"

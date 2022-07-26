@@ -2,7 +2,7 @@
  * 打包成单独小组件
  * 用法：
  * node pack.js Scripts/「源码」小组件示例.js
- * 将会在`Dist`目录生成「小件件」小组件示例.js 文件，这个文件可以发送给用户单独使用
+ * 将会在`Dist`目录生成「Scriptable」小组件示例.js 文件，这个文件可以发送给用户单独使用
  */
 
  const process = require('process')
@@ -17,14 +17,16 @@ if (process.argv.length !== 3) {
 
 const SAVE_PATH = path.join(__dirname, "Dist")
 const file_name = process.argv[2]
-const out_name = file_name.replace("「源码」", "「小件件」").replace("Scripts", "Dist")
+const out_name = file_name
+	.replace('「源码」', '「Scriptable」')
+	.replace('Scripts', 'Dist');
 
 // 创建目录
 if (!fs.existsSync(SAVE_PATH)) {
   fs.mkdirSync(SAVE_PATH)
 }
 // 组合文件
-const runtime_file = fs.readFileSync(path.join(__dirname, "Scripts", "「小件件」开发环境.js"))
+const runtime_file = fs.readFileSync(path.join(__dirname, 'Scripts', 'env.js'));
 
 const runtime_code = runtime_file.toString("utf-8").split("// @running.end")[0]
 const widget_file = fs.readFileSync(path.join(__dirname, file_name))
