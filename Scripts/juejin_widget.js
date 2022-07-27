@@ -5,8 +5,8 @@
 
 // 添加require，是为了vscode中可以正确引入包，以获得自动补全等功能
 if (typeof require === 'undefined') require = importModule;
-const { ScriptableWidget } = require('./widget');
-const { getCurrentPoints, getSignCounts } = require('./juejin');
+const { ScriptableWidget } = require('widget');
+const { getCurrentPoints, getSignCounts } = require('juejin');
 
 // @组件代码开始
 class Widget extends ScriptableWidget {
@@ -61,15 +61,15 @@ class Widget extends ScriptableWidget {
 			cell.addSpacer();
 			w.addSpacer();
 		});
-		// w.addSpacer()
+		w.addSpacer();
 
-		// let lbg = new LinearGradient()
-		// lbg.locations = [0, 1]
-		// lbg.colors = [
-		//   Color.dynamic(new Color('#cfd9df', 1), new Color('#09203f', 1)),
-		//   Color.dynamic(new Color('#e2ebf0', 1), new Color('#537895', 1))
-		// ]
-		// w.backgroundGradient = lbg
+		let lbg = new LinearGradient();
+		lbg.locations = [0, 1];
+		lbg.colors = [
+			Color.dynamic(new Color('#cfd9df', 1), new Color('#09203f', 1)),
+			Color.dynamic(new Color('#e2ebf0', 1), new Color('#537895', 1)),
+		];
+		w.backgroundGradient = lbg;
 		return w;
 	}
 	/**

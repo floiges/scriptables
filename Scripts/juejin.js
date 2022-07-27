@@ -10,10 +10,10 @@ const config = {
 	drawUrl: `https://api.juejin.cn/growth_api/v1/lottery/draw`, //抽奖接口
 	headers: {
 		Referer: 'https://juejin.cn/',
-		'Upgrade-Insecure-Requests': 1,
+		// 'Upgrade-Insecure-Requests': 1,
 		'User-Agent':
 			'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36',
-		cookie: `_ga=GA1.2.389726999.1606803038; MONITOR_WEB_ID=f8206ba6-3d9d-4696-bfc2-8946d7e78d8e; __tea_cookie_tokens_2608=%7B%22user_unique_id%22%3A%226901166487929112077%22%2C%22web_id%22%3A%226901166487929112077%22%2C%22timestamp%22%3A1640747644777%7D; n_mh=h2mcv-yYgGGKdAktKXV0-9I1UjBsChFP5IRxa2LV12s; sid_guard=9e17a0b1387c53b90321f9cbfd19ed91|1652430319|31536000|Sat,+13-May-2023+08:25:19+GMT; uid_tt=37723cdecefe5c071704e0e13543ba30; uid_tt_ss=37723cdecefe5c071704e0e13543ba30; sid_tt=9e17a0b1387c53b90321f9cbfd19ed91; sessionid=9e17a0b1387c53b90321f9cbfd19ed91; sessionid_ss=9e17a0b1387c53b90321f9cbfd19ed91; sid_ucp_v1=1.0.0-KGZiM2UzZDdiNGZiZjcwN2VlYThkZDFiNmVjYzVlYTdkYzIyMTdhODYKFwjehYG-_fW1AxDvq_iTBhiwFDgCQO8HGgJsZiIgOWUxN2EwYjEzODdjNTNiOTAzMjFmOWNiZmQxOWVkOTE; ssid_ucp_v1=1.0.0-KGZiM2UzZDdiNGZiZjcwN2VlYThkZDFiNmVjYzVlYTdkYzIyMTdhODYKFwjehYG-_fW1AxDvq_iTBhiwFDgCQO8HGgJsZiIgOWUxN2EwYjEzODdjNTNiOTAzMjFmOWNiZmQxOWVkOTE; _tea_utm_cache_2608={"utm_source":"gold_browser_extension"}; _gid=GA1.2.1426166690.1658709949`, //用自己的
+		cookie: `_ga=GA1.2.389726999.1606803038; MONITOR_WEB_ID=f8206ba6-3d9d-4696-bfc2-8946d7e78d8e; __tea_cookie_tokens_2608=%7B%22user_unique_id%22%3A%226901166487929112077%22%2C%22web_id%22%3A%226901166487929112077%22%2C%22timestamp%22%3A1640747644777%7D; n_mh=h2mcv-yYgGGKdAktKXV0-9I1UjBsChFP5IRxa2LV12s; sid_guard=9e17a0b1387c53b90321f9cbfd19ed91|1652430319|31536000|Sat,+13-May-2023+08:25:19+GMT; uid_tt=37723cdecefe5c071704e0e13543ba30; uid_tt_ss=37723cdecefe5c071704e0e13543ba30; sid_tt=9e17a0b1387c53b90321f9cbfd19ed91; sessionid=9e17a0b1387c53b90321f9cbfd19ed91; sessionid_ss=9e17a0b1387c53b90321f9cbfd19ed91; sid_ucp_v1=1.0.0-KGZiM2UzZDdiNGZiZjcwN2VlYThkZDFiNmVjYzVlYTdkYzIyMTdhODYKFwjehYG-_fW1AxDvq_iTBhiwFDgCQO8HGgJsZiIgOWUxN2EwYjEzODdjNTNiOTAzMjFmOWNiZmQxOWVkOTE; ssid_ucp_v1=1.0.0-KGZiM2UzZDdiNGZiZjcwN2VlYThkZDFiNmVjYzVlYTdkYzIyMTdhODYKFwjehYG-_fW1AxDvq_iTBhiwFDgCQO8HGgJsZiIgOWUxN2EwYjEzODdjNTNiOTAzMjFmOWNiZmQxOWVkOTE; _tea_utm_cache_2608={"utm_source":"gold_browser_extension"}; _gid=GA1.2.1426166690.1658709949`,
 	}, //相关请求头
 };
 
@@ -104,7 +104,6 @@ const getSignCounts = async () => {
 	req.method = 'GET';
 	req.headers = headers;
 	const res = await req.loadJSON();
-	console.log('🚀 ~ file: juejin.js ~ line 107 ~ getSignCounts ~ res', res);
 	if (res && res.data) {
 		return res.data;
 	}
@@ -121,7 +120,6 @@ const getCurrentPoints = async () => {
 	req.method = 'GET';
 	req.headers = headers;
 	const res = await req.loadJSON();
-	console.log('🚀 ~ file: juejin.js ~ line 123 ~ getCurrentPoints ~ res', res);
 	if (res && res.data) {
 		return res.data;
 	}

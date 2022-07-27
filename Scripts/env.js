@@ -4,7 +4,7 @@
 
 // 添加require，是为了vscode中可以正确引入包，以获得自动补全等功能
 if (typeof require === 'undefined') require = importModule
-const { ScriptableWidget } = require('./widget');
+const { ScriptableWidget } = require('widget');
 
 // 运行环境
 // @running.start
