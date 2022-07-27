@@ -98,12 +98,13 @@ const luckDraw = async () => {
 /**
  * 获取连续签到次数
  */
-const getSignCounts = () => async () => {
+const getSignCounts = async () => {
 	const { headers, getCountsUrl } = config; //抽奖相关参数
 	let req = new Request(getCountsUrl);
 	req.method = 'GET';
 	req.headers = headers;
 	const res = await req.loadJSON();
+	console.log('🚀 ~ file: juejin.js ~ line 107 ~ getSignCounts ~ res', res);
 	if (res && res.data) {
 		return res.data;
 	}
@@ -114,12 +115,13 @@ const getSignCounts = () => async () => {
 /**
  * 获取矿石总数
  */
-const getCurrentPoints = () => async () => {
+const getCurrentPoints = async () => {
 	const { headers, currentPointsUrl } = config; //抽奖相关参数
 	let req = new Request(currentPointsUrl);
 	req.method = 'GET';
 	req.headers = headers;
 	const res = await req.loadJSON();
+	console.log('🚀 ~ file: juejin.js ~ line 123 ~ getCurrentPoints ~ res', res);
 	if (res && res.data) {
 		return res.data;
 	}

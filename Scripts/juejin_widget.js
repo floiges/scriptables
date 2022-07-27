@@ -37,21 +37,6 @@ class Widget extends ScriptableWidget {
 	}
 
 	/**
-	 * 渲染小尺寸组件
-	 */
-	async renderSmall(data) {
-		let w = new ListWidget();
-		await this.renderHeader(w, this.logo, this.name);
-		const t = w.addText(data['hotsearch'][0]['pure_title']);
-		t.font = Font.lightSystemFont(16);
-		w.addSpacer();
-		w.url = this.actionUrl(
-			'open-url',
-			decodeURIComponent(data['hotsearch'][0]['linkurl']),
-		);
-		return w;
-	}
-	/**
 	 * 渲染中尺寸组件
 	 */
 	async renderMedium(data = [], num = 4) {
